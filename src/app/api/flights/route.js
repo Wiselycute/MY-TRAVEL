@@ -6,11 +6,57 @@ import Flight from "@/models/Flight";
 const badRequest = (msg) => NextResponse.json({ success: false, message: msg }, { status: 400 });
 const serverError = (msg = "Server error") => NextResponse.json({ success: false, message: msg }, { status: 500 });
 
-export async function GET() {
+export async function GET(request) {
   try {
     await connectDB();
-    const flights = await Flight.find().lean();
-    return NextResponse.json({ success: true, data: flights }, { status: 200 });
+
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page")) || 1;
+    const limit = parseInt(searchParams.get("limit")) || 10;
+    const search = searchParams.get("search") || "";
+    const origin = searchParams.get("origin") || "";
+    const destination = searchParams.get("destination") || "";
+    const minPrice = parseFloat(searchParams.get("minPrice")) || 0;
+    const maxPrice = parseFloat(searchParams.get("maxPrice")) || Number.MAX_SAFE_INTEGER;
+    const departureDate = searchParams.get("departureDate");
+
+    // Build filter query
+    const filter = {};
+    if (search) {
+      filter.$or = [
+        { airline_name: { $regex: search, $options: "i" } },
+        { flight_number: { $regex: search, $options: "i" } }
+      ];
+    }
+    if (origin) {
+      filter.origin_airport = { $regex: origin, $options: "i" };
+    }
+    if (destination) {
+      filter.destination_airport = { $regex: destination, $options: "i" };
+    }
+    filter.price = { $gte: minPrice, $lte: maxPrice };
+    if (departureDate) {
+      const startDate = new Date(departureDate);
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + 1);
+      filter.departure_time = { $gte: startDate, $lt: endDate };
+    }
+
+    const skip = (page - 1) * limit;
+    const total = await Flight.countDocuments(filter);
+    const flights = await Flight.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sort({ departure_time: 1, price: 1 })
+      .lean();
+
+    return NextResponse.json({
+      success: true,
+      flights,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
+    }, { status: 200 });
   } catch (err) {
     console.error("GET /api/flights error:", err);
     return serverError();

@@ -1,7 +1,11 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import NavbarComponent from "@/components/navbar/NavbarComponent"; // ✅ fixed
+
+import { ClerkProvider, SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+
+import NavbarWrapper from '@/components/navbar/NavbarWrapper';
+import FooterWrapper from '@/components/footer/FooterWrapper';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,20 +24,23 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {/* <NavbarComponent /> */}
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NavbarWrapper />
+            <main className="pt-20">{children}</main>
+            <FooterWrapper />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

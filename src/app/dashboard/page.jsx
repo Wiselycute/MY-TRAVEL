@@ -1,30 +1,15 @@
-"use cleint"
-import NavbarComponent from './../../components/dashboard/navbar/NavbarComponent';
-import SidebarComponent from './../../components/dashboard/sidebar/SidebarComponent';
+"use client";
+import DashboardStats from '@/components/dashboard/DashboardStats';
 
-export default function page() {
+export default function DashboardPage() {
   return (
-    <>
-    <div className="flex bg-background">
-
-
-      <div className="flex-1 bg-secondary p-[20px]">
-
-           <SidebarComponent/>
+    <div className="min-h-screen bg-background">
+      <main className="p-6">
+        <div className="container mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-8">Dashboard Overview</h1>
+          <DashboardStats />
         </div>
-      
-        <div className="flex-4">
-           <NavbarComponent/>
-        </div>
-
-        <div>
-
-        </div>
-
+      </main>
     </div>
-    
-    
-    {/* </> */}
-    </>
   );
 }

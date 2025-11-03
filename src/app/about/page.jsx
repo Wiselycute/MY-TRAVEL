@@ -8,43 +8,43 @@ const teamMembers = [
   {
     name: "Chang Qiu Sheng",
     title: "CEO",
-    image: "/about-us/img1.png",
+    image: "https://i.pinimg.com/1200x/8f/23/44/8f23447418ff5e3e048ad43742eaf93a.jpg",
     bio: `Mr. Chang is the founder and CEO of Amber Aviation. With over 20 years of experience in the business aviation industry, he has led the company from inception to becoming one of Asia’s most trusted private aviation providers.`,
   },
   {
     name: "Vicky Tsui",
     title: "VP of Marketing",
-    image: "/about-us/img2.png",
+    image: "https://i.pinimg.com/736x/c4/d8/f8/c4d8f8f64e1f00a5ca02253f5ecc27d0.jpg",
     bio: `Ms. Tsui oversees business development, management and marketing in the Asia Pacific region. She has over 12 years of management experience in the business jet sector and is known for her deep understanding of client needs.`,
   },
   {
     name: "Yongyi Zhang",
     title: "VP of Flight Operation",
-    image: "/yongyi.jpg",
+    image: "https://i.pinimg.com/736x/0b/2e/98/0b2e988dcec7af0209aa42d919c6967b.jpg",
     bio: `Captain Zhang leads the flight operations division with a strong background in commercial and private aviation. He ensures the highest standards of safety and compliance across all flight operations.`,
   },
   {
     name: "Bob Li",
     title: "VP of Operations",
-    image: "/bob.jpg",
+    image: "https://i.pinimg.com/736x/38/bd/10/38bd10063fd5a79dadde2d5d1d3a0590.jpg",
     bio: `Mr. Li manages all ground operations, ensuring efficiency in logistics and aircraft readiness. His hands-on approach and attention to detail drive excellence in Amber Aviation’s daily execution.`,
   },
   {
     name: "David Du",
     title: "Executive VP",
-    image: "/david.jpg",
+    image: "https://i.pinimg.com/474x/34/da/e2/34dae2b1c9a2c38bfdc18bbb5a414149.jpg",
     bio: `Mr. Du supports corporate strategy, international partnerships, and executive decision-making. He brings global industry expertise and a strategic vision to the leadership team.`,
   },
   {
     name: "Zoe Zhao",
     title: "VP of Finance",
-    image: "/zoe.jpg",
+    image: "https://i.pinimg.com/736x/1e/51/9e/1e519e46785cc66de254a962dc0b7c9b.jpg",
     bio: `Ms. Zhao oversees the company’s financial strategy and planning. Her financial acumen has been crucial in scaling operations and maintaining fiscal discipline while enabling growth.`,
   },
   {
     name: "Nicole Chen",
     title: "VP of HR",
-    image: "/nicole.jpg",
+    image: "https://i.pinimg.com/1200x/bd/f3/e8/bdf3e8621178bc9207fec2d512de166a.jpg",
     bio: `Ms. Chen is responsible for talent development and human resource management. She ensures a positive workplace culture and leads HR initiatives that align with company goals.`,
   },
 ];
@@ -78,7 +78,7 @@ export default function AboutUsPage() {
   const selectedMember = teamMembers[index];
   return (
 
- <div className="min-h-screen bg-gray-50 text-gray-800 px-4 sm:px-6 py-10 overflow-hidden">
+ <div className="min-h-screen bg-background  mt-15 px-4 sm:px-6 py-10 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
         {/* Text Section */}
         <AnimatePresence mode="wait" initial={false}>
@@ -88,11 +88,11 @@ export default function AboutUsPage() {
             animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
             exit={{ x: direction * 80, opacity: 0, filter: 'blur(5px)' }}
             transition={{ duration: 0.6 }}
-            className="lg:w-1/2 space-y-6 text-center lg:text-left"
+            className="lg:w-1/2 space-y-6 text-center lg:text-left "
           >
-            <h1 className="text-3xl sm:text-4xl font-bold">{selectedMember.name}</h1>
-            <h2 className="text-lg sm:text-xl text-gray-600">{selectedMember.title}</h2>
-            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+            <h1 className="text-3xl sm:text-4xl text-[#FFA500] font-bold">{selectedMember.name}</h1>
+            <h2 className="text-lg sm:text-xl text-primary">{selectedMember.title}</h2>
+            <p className=" leading-relaxed text-sm sm:text-base">
               {selectedMember.bio}
             </p>
             <div className="flex justify-center lg:justify-start items-center gap-4 mt-4">
@@ -145,7 +145,7 @@ export default function AboutUsPage() {
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border border-gray-300"
               />
               <div className="text-sm font-medium">{member.name}</div>
-              <div className="text-xs text-gray-500">{member.title}</div>
+              <div className="text-xs text-primary">{member.title}</div>
             </div>
           ))}
         </div>
