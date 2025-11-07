@@ -2,36 +2,11 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
-import axios from "axios";
 import BookingModal from "./../bookings/BookingModal";
 
 export default function RoomCard({ room }) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const handleBooking = async () => {
-    try {
-      setLoading(true);
-      const total = room.price; // you can extend this with date range logic
-
-      const bookingData = {
-        user_id: "USER_ID_HERE", // TODO: Replace with real user_id from auth
-        booking_type: "hotel",
-        total_amount: total,
-        status: "pending",
-      };
-
-      await axios.post("/api/bookings", bookingData);
-      toast.success("Hotel booked successfully!");
-      setOpen(false);
-    } catch (err) {
-      console.error(err);
-      toast.error("Booking failed!");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <motion.div
@@ -60,10 +35,10 @@ export default function RoomCard({ room }) {
       {/* Modal */}
       {open && (
         <BookingModal
-          room={room}
-          loading={loading}
+          item={room}
+          type="hotel"
           onClose={() => setOpen(false)}
-          onConfirm={handleBooking}
+          onBookingUpdate={() => {}}
         />
       )}
     </motion.div>

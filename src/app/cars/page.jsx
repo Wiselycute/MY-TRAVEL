@@ -1,24 +1,35 @@
-"use cleint"
+"use client";
 
-import FeaturedComponent from "@/components/cars/FeaturedComponent/FeaturedComponent";
-import FilterComponent from "@/components/cars/FilterComponent/FilterComponent";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import HeroComponent from "@/components/cars/HeroComponent/HeroComponent";
-import NewsComponent from "@/components/cars/NewsComponent/NewsComponent";
+import FilterComponent from "@/components/cars/FilterComponent/FilterComponent";
 import ServicesComponent from "@/components/cars/ServicesComponent/ServicesComponent";
+import NewsComponent from "@/components/cars/NewsComponent/NewsComponent";
 
+export default function CarsPage() {
+  const [cars, setCars] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
 
-export default function page() {
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const res = await axios.get("/api/cars");
+        setCars(res.data);
+        setFilteredCars(res.data);
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    };
+    fetchCars();
+  }, []);
+
   return (
     <>
-    <HeroComponent />
-      <FilterComponent />
-      <ServicesComponent />
-      {/* <RentCarCard /> */}
-      {/* <BuyCarCard /> */}
-      {/* <FeaturedNewsCard/> */}
-      <FeaturedComponent />
+      <HeroComponent />
+      <FilterComponent cars={cars} setFilteredCars={setFilteredCars} />
+      <ServicesComponent cars={filteredCars} />
       <NewsComponent />
-    
     </>
   );
 }

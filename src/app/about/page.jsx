@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, PlaneTakeoff, Globe2, ShieldCheck } from 'lucide-react';
 
 const teamMembers = [
   {
@@ -49,19 +49,15 @@ const teamMembers = [
   },
 ];
 
-
-
 export default function AboutUsPage() {
-    const [index, setIndex] = useState(1); // Default to Vicky Tsui
+  const [index, setIndex] = useState(1);
   const [direction, setDirection] = useState(1);
 
-  // Auto-play every 6 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setDirection(1);
       setIndex((prev) => (prev + 1) % teamMembers.length);
     }, 6000);
-
     return () => clearInterval(timer);
   }, []);
 
@@ -76,23 +72,25 @@ export default function AboutUsPage() {
   };
 
   const selectedMember = teamMembers[index];
-  return (
 
- <div className="min-h-screen bg-background  mt-15 px-4 sm:px-6 py-10 overflow-hidden">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center">
+  return (
+    <div className="min-h-screen bg-background px-4 sm:px-6 py-10 overflow-hidden">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center ">
         {/* Text Section */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={selectedMember.name + "-text"}
+            key={selectedMember.name + '-text'}
             initial={{ x: direction * -80, opacity: 0, filter: 'blur(5px)' }}
             animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
             exit={{ x: direction * 80, opacity: 0, filter: 'blur(5px)' }}
             transition={{ duration: 0.6 }}
-            className="lg:w-1/2 space-y-6 text-center lg:text-left "
+            className="lg:w-1/2 space-y-6 text-center lg:text-left"
           >
-            <h1 className="text-3xl sm:text-4xl text-[#FFA500] font-bold">{selectedMember.name}</h1>
+            <h1 className="text-3xl sm:text-4xl text-[#FFA500] font-bold">
+              {selectedMember.name}
+            </h1>
             <h2 className="text-lg sm:text-xl text-primary">{selectedMember.title}</h2>
-            <p className=" leading-relaxed text-sm sm:text-base">
+            <p className="leading-relaxed text-sm sm:text-base">
               {selectedMember.bio}
             </p>
             <div className="flex justify-center lg:justify-start items-center gap-4 mt-4">
@@ -109,17 +107,17 @@ export default function AboutUsPage() {
         {/* Image Section */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={selectedMember.name + "-image"}
+            key={selectedMember.name + '-image'}
             initial={{ x: direction * 80, opacity: 0, filter: 'blur(5px)' }}
             animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
             exit={{ x: direction * -80, opacity: 0, filter: 'blur(5px)' }}
             transition={{ duration: 0.6 }}
-            className="lg:w-1/2  flex justify-center items-center"
+            className="lg:w-1/2 flex justify-center items-center"
           >
             <img
               src={selectedMember.image}
               alt={selectedMember.name}
-              className=" w-[280px] sm:w-[350px] lg:w-[400px] object-cover "
+              className="w-[280px] sm:w-[350px] lg:w-[300px] lg:h-[300px] object-cover"
             />
           </motion.div>
         </AnimatePresence>
@@ -150,6 +148,41 @@ export default function AboutUsPage() {
           ))}
         </div>
       </div>
+
+      {/* ✈️ COMPANY STORY SECTION */}
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        viewport={{ once: true }}
+        className="mt-24 max-w-6xl mx-auto text-center space-y-8"
+      >
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#FFA500]">About My Travel</h2>
+        <p className="max-w-3xl mx-auto  leading-relaxed text-base sm:text-lg">
+          Founded with a vision to redefine private air travel, <span className="font-semibold text-primary">My Travel</span> offers a seamless fusion of safety, comfort, and luxury. 
+          Our mission is to make private flying accessible, reliable, and sustainable — backed by a team that values precision and personalized service.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <motion.div whileHover={{ y: -6 }} className="p-6 bg-secondary rounded-2xl shadow-lg border border-blue-200">
+            <PlaneTakeoff className="text-[#FFA500] w-10 h-10 mx-auto mb-3" />
+            <h3 className="font-semibold text-lg mb-2">Innovation in the Sky</h3>
+            <p className="text-gray-600 text-sm">Amber Aviation pioneers smart aviation management systems, offering tailored flight experiences powered by technology.</p>
+          </motion.div>
+
+          <motion.div whileHover={{ y: -6 }} className="p-6 bg-secondary rounded-2xl shadow-lg border border-blue-200">
+            <ShieldCheck className="text-[#FFA500] w-10 h-10 mx-auto mb-3" />
+            <h3 className="font-semibold text-lg mb-2">Uncompromised Safety</h3>
+            <p className="text-gray-600 text-sm">Our flight and maintenance crews adhere to global safety standards, ensuring every journey is secure and worry-free.</p>
+          </motion.div>
+
+          <motion.div whileHover={{ y: -6 }} className="p-6 bg-secondary rounded-2xl shadow-lg border border-blue-200">
+            <Globe2 className="text-[#FFA500] w-10 h-10 mx-auto mb-3" />
+            <h3 className="font-semibold text-lg mb-2">Global Connectivity</h3>
+            <p className="text-gray-600 text-sm">With partners across continents, Amber Aviation connects you to the world through trusted international operations.</p>
+          </motion.div>
+        </div>
+      </motion.section>
     </div>
   );
 }

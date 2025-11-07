@@ -26,27 +26,47 @@ export async function GET(req, { params }) {
   }
 }
 
+// export async function PUT(req, { params }) {
+//   try {
+//     await connectDB();
+//     const resolvedParams = typeof params?.then === "function" ? await params : params;
+//     const id = resolvedParams?.id;
+//     if (!id) return badRequest("Missing id parameter");
+//     if (!mongoose.Types.ObjectId.isValid(id)) return badRequest("Invalid id format");
+
+//     const data = await req.json();
+//     if (!data || Object.keys(data).length === 0) return badRequest("Empty request body");
+
+//     // Ensure we only update allowed fields and let Mongoose validate enums
+//     const updated = await Booking.findByIdAndUpdate(id, data, { new: true, runValidators: true }).lean();
+//     if (!updated) return notFound("Booking not found");
+//     return NextResponse.json({ success: true, data: updated }, { status: 200 });
+//   } catch (err) {
+//     console.error("PUT /api/bookings/[id] error:", err);
+//     if (err.name === "ValidationError") return NextResponse.json({ success: false, message: err.message }, { status: 400 });
+//     return serverError();
+//   }
+// }
+
 export async function PUT(req, { params }) {
   try {
     await connectDB();
-    const resolvedParams = typeof params?.then === "function" ? await params : params;
-    const id = resolvedParams?.id;
-    if (!id) return badRequest("Missing id parameter");
-    if (!mongoose.Types.ObjectId.isValid(id)) return badRequest("Invalid id format");
-
+    const { id } = params;
     const data = await req.json();
-    if (!data || Object.keys(data).length === 0) return badRequest("Empty request body");
 
-    // Ensure we only update allowed fields and let Mongoose validate enums
-    const updated = await Booking.findByIdAndUpdate(id, data, { new: true, runValidators: true }).lean();
-    if (!updated) return notFound("Booking not found");
-    return NextResponse.json({ success: true, data: updated }, { status: 200 });
+    const booking = await Booking.findByIdAndUpdate(id, data, { new: true });
+
+    if (!booking) {
+      return NextResponse.json({ success: false, message: "Booking not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, data: booking });
   } catch (err) {
-    console.error("PUT /api/bookings/[id] error:", err);
-    if (err.name === "ValidationError") return NextResponse.json({ success: false, message: err.message }, { status: 400 });
-    return serverError();
+    console.error(err);
+    return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
+
 
 export async function DELETE(req, { params }) {
   try {

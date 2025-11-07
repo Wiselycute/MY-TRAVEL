@@ -25,19 +25,31 @@ export default function HotelDetailsPage() {
     axios
       .get("/api/rooms")
       .then((res) => {
-        const filteredRooms = res.data.filter((room) => room.hotel_id === id);
+        // API returns { success: true, data: [...] } — normalize
+        const roomsData = res.data?.data || res.data || [];
+
+        const filteredRooms = roomsData.filter((room) => {
+          // room.hotel_id may be an ObjectId, an object with _id, or a string
+          const roomHotelId = room?.hotel_id?._id || room?.hotel_id;
+          return String(roomHotelId) === String(id);
+        });
+
         setRooms(filteredRooms);
       })
       .catch((err) => console.error("Error fetching rooms:", err));
   }, [id]);
 
   if (!hotel)
-    return (
-      <div className="min-h-screen flex items-center justify-center text-gray-700 dark:text-gray-200">
-        Loading hotel details...
-      </div>
+    // return (
+    //   <div className="min-h-screen flex items-center justify-center text-gray-700 dark:text-gray-200">
+    //     Loading hotel details...
+    //   </div>
+    // );
+       return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
     );
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-8 md:p-16 transition-colors duration-300">
       <motion.div

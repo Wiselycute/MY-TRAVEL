@@ -5,16 +5,30 @@ import Booking from "@/models/Booking";
 import User from "@/models/User";
 import mongoose from "mongoose";
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectDB();
+
+    // Support optional filtering by user_id via query param: /api/bookings?user_id=...
+    const url = new URL(req.url);
+    const userId = url.searchParams.get('user_id');
+
+    const query = {};
+    if (userId) {
+      // validate ObjectId shape before querying
+      if (!mongoose.isValidObjectId(userId)) {
+        return NextResponse.json({ error: 'Invalid user_id' }, { status: 400 });
+      }
+      query.user_id = userId;
+    }
+
     // Ensure User model is registered before populate runs
     // (importing User above registers the schema with mongoose)
-    const bookings = await Booking.find().populate("user_id");
-    return NextResponse.json(bookings);
+    const bookings = await Booking.find(query).populate('user_id');
+    return NextResponse.json({ success: true, data: bookings });
   } catch (error) {
-    console.error("Error fetching bookings:", error);
-    return NextResponse.json({ error: "Failed to fetch bookings" }, { status: 500 });
+    console.error('Error fetching bookings:', error);
+    return NextResponse.json({ error: 'Failed to fetch bookings' }, { status: 500 });
   }
 }
 
@@ -52,3 +66,4 @@ export async function POST(req) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+// import { NextResponse } from "next/server";

@@ -68,7 +68,14 @@ export default function HotelsPage() {
 
   // 🏠 If hotel is selected → show Hotel Details + Rooms
   if (!hotel)
-    return <div className="text-center p-10 text-white">Loading...</div>;
+    // return <div className="text-center p-10 text-white">Loading...</div>;
+    return (
+       
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+       
+      );
 
   return (
     <div className="min-h-screen bg-background p-8">

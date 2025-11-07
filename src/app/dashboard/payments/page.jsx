@@ -94,8 +94,8 @@ export default function PaymentsPage() {
           <tbody className="divide-y divide-gray-200">
             {payments.map((payment) => (
               <tr key={payment._id}>
-                <td className="px-6 py-4 whitespace-nowrap">{payment.booking_id}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{payment.user_id}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{typeof payment.booking_id === 'object' ? payment.booking_id._id : payment.booking_id}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{typeof payment.user_id === 'object' ? payment.user_id.name || payment.user_id.email || payment.user_id._id : payment.user_id}</td>
                 <td className="px-6 py-4 whitespace-nowrap">${payment.amount}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {new Date(payment.payment_date).toLocaleDateString()}

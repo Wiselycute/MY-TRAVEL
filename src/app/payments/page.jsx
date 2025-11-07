@@ -156,11 +156,19 @@ export default function PaymentsPage() {
                 </p>
                 <p>
                   <span className="font-semibold">Booking ID:</span>{" "}
-                  {payment.booking_id || "N/A"}
+                  {payment.booking_id
+                    ? (typeof payment.booking_id === 'object'
+                        ? payment.booking_id._id || "N/A"
+                        : payment.booking_id)
+                    : "N/A"}
                 </p>
                 <p>
                   <span className="font-semibold">User ID:</span>{" "}
-                  {payment.user_id || "N/A"}
+                  {payment.user_id
+                    ? (typeof payment.user_id === 'object'
+                        ? payment.user_id.name || payment.user_id.email || payment.user_id._id || "N/A"
+                        : payment.user_id)
+                    : "N/A"}
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                   {new Date(payment.payment_date).toLocaleString()}

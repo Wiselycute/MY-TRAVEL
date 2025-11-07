@@ -21,11 +21,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-surface border-t border-border text-sm text-muted-foreground">
+    <footer className="w-full bg-slate-900 border-t border-border text-sm text-muted-foreground">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-foreground">My Travel</h3>
+            <h3 className="text-lg font-semibold text-primary">My Travel</h3>
             <p className="text-sm leading-relaxed">
               Classic design, modern experience. Explore curated trips, flexible bookings, and 24/7 support.
             </p>
@@ -42,8 +42,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h4 className="font-semibold mb-3 text-foreground">Quick Links</h4>
+          <div >
+            <h4 className="font-semibold mb-3 text-white">Quick Links</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/flights" className="hover:text-foreground">Flights</Link>
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-3 text-foreground">Support</h4>
+            <h4 className="font-semibold mb-3 text-white">Support</h4>
             <ul className="space-y-2">
               <li className="flex items-start gap-2">
                 <Mail className="w-4 h-4 mt-1 text-primary" />
@@ -79,7 +79,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-3 text-foreground">Newsletter</h4>
+            <h4 className="font-semibold mb-3 text-white">Newsletter</h4>
             <p className="text-sm mb-3">Get travel deals, updates and tips — delivered weekly.</p>
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
               <input

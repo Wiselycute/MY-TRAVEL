@@ -107,8 +107,10 @@ import { redirect, useRouter } from "next/navigation";
       style={{ backgroundImage: "url('/login-bg.jpg')" }}
     >
       <div className="bg-white/10 backdrop-blur-lg shadow-xl p-10 rounded-2xl w-full max-w-md border border-white/30">
-               <h2 className="flex items-center gap-2 text-2xl font-semibold mb-6 text-black"><FaTwitter size={28} className='text-[#1DA1F2]'/>Sign in</h2>
-
+              <div className="flex justify-between p-2">
+                 <h2 className="text-2xl font-bold text-primary cursor-pointer flex">
+                  My Travel </h2>
+              </div>
                   
                       <div className='flex justify-between gap-4 text-gray-600'>
                

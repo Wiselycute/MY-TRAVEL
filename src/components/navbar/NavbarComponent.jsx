@@ -21,21 +21,21 @@ export default function NavbarComponent() {
   const [hover, setHover] = useState(false);
   const [user, setUser] = useState(null);
 
-  // ✅ Load user from localStorage
+  //  Load user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  // ✅ Logout
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
-    window.location.href = "/auth/signin"; // ✅ redirect to signin page
+    window.location.href = "/auth/signin"; //  redirect to signin page
   };
 
   return (
-    <nav className="w-full bg-background border-border fixed top-0 left-0 z-50 backdrop-blur-md">
+    <nav className="w-full bg-slate-900 border-border fixed top-0 left-0 z-50 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
         {/* Logo */}
         <h1 className="text-2xl font-bold text-primary cursor-pointer">
@@ -47,7 +47,7 @@ export default function NavbarComponent() {
           <li>
             <Link
               href="/"
-              className="hover:text-primary transition-colors duration-300"
+              className="hover:text-primary text-white transition-colors duration-300"
             >
               Home
             </Link>
@@ -59,7 +59,7 @@ export default function NavbarComponent() {
             onMouseLeave={() => setHover(false)}
             className="relative"
           >
-            <li className="hover:text-primary cursor-pointer">Services</li>
+            <li className="hover:text-primary text-white cursor-pointer">Services</li>
             <AnimatePresence>
               {hover && (
                 <motion.div
@@ -135,7 +135,7 @@ export default function NavbarComponent() {
             <li key={item}>
               <Link
                 href={`/${item.toLowerCase()}`}
-                className="hover:text-primary transition-colors duration-300"
+                className="hover:text-primary text-white transition-colors duration-300"
               >
                 {item}
               </Link>
