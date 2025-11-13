@@ -44,3 +44,26 @@ export default function RoomCard({ room }) {
     </motion.div>
   );
 }
+// "use client";
+// import { motion } from "framer-motion";
+// import BookingModal from "@/components/bookings/BookingModal";
+// import { useState } from "react";
+
+// export default function RoomCard({ room, onBook }) {
+//   const [open, setOpen] = useState(false);
+
+//   return (
+//     <motion.div whileHover={{ scale: 1.02 }} className="bg-white/5 p-4 rounded-xl shadow-sm">
+//       <img src={room.image || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c"} alt={room.room_type} className="w-full h-36 object-cover rounded-md mb-3" />
+//       <h3 className="text-lg font-semibold">{room.room_type}</h3>
+//       <p className="text-orange-400 font-semibold">${room.price} / night</p>
+//       <p className="text-sm text-gray-400">Capacity: {room.capacity}</p>
+
+//       <div className="mt-3 flex gap-2">
+//         <button onClick={() => { onBook?.(); setOpen(true); }} className="flex-1 bg-orange-500 text-white py-2 rounded">Book</button>
+//       </div>
+
+//       {open && <BookingModal item={room} type="hotel" onClose={() => setOpen(false)} />}
+//     </motion.div>
+//   );
+// }

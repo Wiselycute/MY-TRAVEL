@@ -177,7 +177,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import PaymentModal from '@/components/payment/PaymentModal';
-import EditBookingModal from './../../components/bookings/EditBookingModal';
+import EditBookingModal from '../../components/bookings/EditBookingModal';
 
 
 export default function BookingsPage() {

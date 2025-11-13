@@ -74,7 +74,7 @@ export default function AboutUsPage() {
   const selectedMember = teamMembers[index];
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10 overflow-hidden">
+    <div className="min-h-screen bg-background mt-11 px-4 sm:px-6 py-10 overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 items-center ">
         {/* Text Section */}
         <AnimatePresence mode="wait" initial={false}>

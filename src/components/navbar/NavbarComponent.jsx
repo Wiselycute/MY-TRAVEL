@@ -35,7 +35,7 @@ export default function NavbarComponent() {
   };
 
   return (
-    <nav className="w-full bg-slate-900 border-border fixed top-0 left-0 z-50 backdrop-blur-md">
+    <nav className="w-full bg-background border-border fixed top-0 left-0 z-50 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
         {/* Logo */}
         <h1 className="text-2xl font-bold text-primary cursor-pointer">
@@ -47,7 +47,7 @@ export default function NavbarComponent() {
           <li>
             <Link
               href="/"
-              className="hover:text-primary text-white transition-colors duration-300"
+              className="hover:text-primary  transition-colors duration-300"
             >
               Home
             </Link>
@@ -59,7 +59,7 @@ export default function NavbarComponent() {
             onMouseLeave={() => setHover(false)}
             className="relative"
           >
-            <li className="hover:text-primary text-white cursor-pointer">Services</li>
+            <li className="hover:text-primary  cursor-pointer">Services</li>
             <AnimatePresence>
               {hover && (
                 <motion.div
@@ -80,7 +80,7 @@ export default function NavbarComponent() {
                           href="/flights"
                           className="block px-2 py-1 hover:bg-primary/10 rounded-md"
                         >
-                          ✈️ Flights
+                           Flights
                         </Link>
                       </li>
                       <li>
@@ -88,7 +88,7 @@ export default function NavbarComponent() {
                           href="/hotels"
                           className="block px-2 py-1 hover:bg-primary/10 rounded-md"
                         >
-                          🏨 Hotels
+                           Hotels
                         </Link>
                       </li>
                       <li>
@@ -96,7 +96,7 @@ export default function NavbarComponent() {
                           href="/cars"
                           className="block px-2 py-1 hover:bg-primary/10 rounded-md"
                         >
-                          🚘 Cars
+                           Cars
                         </Link>
                       </li>
                       <li>
@@ -104,7 +104,7 @@ export default function NavbarComponent() {
                           href="/packages"
                           className="block px-2 py-1 hover:bg-primary/10 rounded-md"
                         >
-                          📦 Packages
+                           Packages
                         </Link>
                       </li>
                       <li>
@@ -112,7 +112,7 @@ export default function NavbarComponent() {
                           href="/insurance"
                           className="block px-2 py-1 hover:bg-primary/10 rounded-md"
                         >
-                          🛡️ Insurance
+                           Insurance
                         </Link>
                       </li>
                       <li>
@@ -120,7 +120,7 @@ export default function NavbarComponent() {
                           href="/tours"
                           className="block px-2 py-1 hover:bg-primary/10 rounded-md"
                         >
-                          🎟️ Tours & Activities
+                           Tours & Activities
                         </Link>
                       </li>
                     </ul>
@@ -131,11 +131,11 @@ export default function NavbarComponent() {
           </div>
 
           {/* Other Links */}
-          {["About", "Contact", "Booking"].map((item) => (
+          {["About", "Contact", "Bookings", "Payments"].map((item) => (
             <li key={item}>
               <Link
                 href={`/${item.toLowerCase()}`}
-                className="hover:text-primary text-white transition-colors duration-300"
+                className="hover:text-primary  transition-colors duration-300"
               >
                 {item}
               </Link>
@@ -146,8 +146,8 @@ export default function NavbarComponent() {
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer w-7 h-7 bg-primary text-white hover:opacity-90 transition">
-                  <AvatarFallback className="font-bold text-white text- bg-primary">
+                <Avatar className="cursor-pointer w-7 h-7 bg-primary  hover:opacity-90 transition">
+                  <AvatarFallback className="font-bold  text-white bg-primary">
                     {user.name?.charAt(0).toUpperCase() || "U"}
                   </AvatarFallback>
                 </Avatar>

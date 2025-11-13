@@ -130,3 +130,77 @@ export default function HotelHero({ onSearch }) {
     </section>
   );
 }
+// "use client";
+
+// import { motion } from "framer-motion";
+// import { Search } from "lucide-react";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import { useState } from "react";
+
+// export default function HotelHero({ onSearch }) {
+//   const [location, setLocation] = useState("");
+//   const [checkIn, setCheckIn] = useState(null);
+//   const [checkOut, setCheckOut] = useState(null);
+//   const [guests, setGuests] = useState(1);
+
+//   const handleSearch = () => {
+//     onSearch?.({ location, checkIn, checkOut, guests });
+//   };
+
+//   return (
+//     <section className="relative bg-cover bg-center" style={{ backgroundImage: "url('/hero-hotel.jpg')" }}>
+//       <div className="bg-black/40 py-14">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+//           <motion.h1 initial={{ y: 20 }} animate={{ y: 0 }} className="text-4xl font-bold mb-2">
+//             Enjoy your <span className="text-orange-300">Dream Vacation</span>
+//           </motion.h1>
+//           <p className="mb-6 text-gray-200 max-w-2xl">Find and book perfect stays — quick, simple, and secure.</p>
+
+//           <div className="bg-white/90 dark:bg-gray-800 rounded-2xl p-4 flex flex-col md:flex-row gap-3 items-center">
+//             <div className="flex-1">
+//               <label className="text-xs text-gray-700">Location</label>
+//               <input
+//                 list="locations"
+//                 value={location}
+//                 onChange={(e) => setLocation(e.target.value)}
+//                 placeholder="Enter destination"
+//                 className="w-full p-2 rounded-md border"
+//               />
+//               <datalist id="locations">
+//                 <option value="Dubai" />
+//                 <option value="Paris" />
+//                 <option value="New York" />
+//                 <option value="Cape Town" />
+//                 <option value="Tokyo" />
+//                 <option value="Rome" />
+//                 <option value="Lagos" />
+//               </datalist>
+//             </div>
+
+//             <div className="flex-1">
+//               <label className="text-xs text-gray-700">Check In</label>
+//               <DatePicker selected={checkIn} onChange={(d) => setCheckIn(d)} minDate={new Date()} placeholderText="Check in" className="w-full p-2 rounded-md border" />
+//             </div>
+
+//             <div className="flex-1">
+//               <label className="text-xs text-gray-700">Check Out</label>
+//               <DatePicker selected={checkOut} onChange={(d) => setCheckOut(d)} minDate={checkIn || new Date()} placeholderText="Check out" className="w-full p-2 rounded-md border" />
+//             </div>
+
+//             <div className="w-40">
+//               <label className="text-xs text-gray-700">Guests</label>
+//               <select value={guests} onChange={(e) => setGuests(Number(e.target.value))} className="w-full p-2 rounded-md border">
+//                 {[1,2,3,4,5].map(n => <option key={n} value={n}>{n} {n===1?"guest":"guests"}</option>)}
+//               </select>
+//             </div>
+
+//             <button onClick={handleSearch} className="bg-orange-500 text-white px-4 py-2 rounded-md flex items-center gap-2">
+//               <Search /> Search
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }

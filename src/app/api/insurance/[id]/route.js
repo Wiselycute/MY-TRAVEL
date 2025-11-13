@@ -1,4 +1,4 @@
-// app/api/insurance/[id]/route.js
+
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import connectDB from "@/db/connectDB";

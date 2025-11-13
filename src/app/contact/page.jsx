@@ -163,10 +163,7 @@ export default function page() {
         </Button>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-muted py-10 px-4 text-center text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} My Travel | All rights reserved.</p>
-      </footer>
+      
     </div>
      
     </>
