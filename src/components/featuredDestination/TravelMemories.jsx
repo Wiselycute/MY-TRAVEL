@@ -31,7 +31,7 @@ export default function TravelMemories() {
         {/* Left content */}
         <div>
           <motion.h2
-            className="text-3xl md:text-4xl font-bold mb-3 text-gray-900"
+            className="text-3xl md:text-4xl font-bold mb-3 "
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -57,7 +57,7 @@ export default function TravelMemories() {
                   {step.id}
                 </span>
                 <div>
-                  <h3 className="font-semibold text-lg mb-1 text-gray-900">
+                  <h3 className="font-semibold text-lg mb-1 ">
                     {step.title}
                   </h3>
                   <p className="text-gray-500">{step.desc}</p>
@@ -68,7 +68,7 @@ export default function TravelMemories() {
 
           <motion.button
             whileHover={{ scale: 1.05 }}
-            className="mt-10 bg-sky-500 text-white font-medium px-6 py-3 rounded-xl shadow-lg"
+            className="mt-10 bg-sky-500  font-medium px-6 py-3 rounded-xl shadow-lg"
           >
             Start your explore
           </motion.button>
@@ -98,7 +98,7 @@ export default function TravelMemories() {
               height={30}
               className="rounded-full"
             />
-            <span className="font-medium text-sm">Karmelia Diana ⭐ 4.9</span>
+            <span className="font-medium text-black text-sm">Karmelia Diana ⭐ 4.9</span>
           </div>
 
           <div className="absolute bottom-10 left-10 bg-white shadow-md px-4 py-2 rounded-xl flex items-center gap-2">
@@ -109,7 +109,7 @@ export default function TravelMemories() {
               height={60}
               className="rounded-full"
             />
-            <span className="font-medium text-sm">Joe Zefrano ⭐ 4.9</span>
+            <span className="font-medium text-black text-sm">Joe Zefrano ⭐ 4.9</span>
           </div>
 
           <div className="absolute bottom-16 right-5 bg-white shadow-md px-4 py-2 rounded-xl flex items-center gap-2">
@@ -120,7 +120,7 @@ export default function TravelMemories() {
               height={30}
               className="rounded-full"
             />
-            <span className="font-medium text-sm">Haikal Adams ⭐ 4.9</span>
+            <span className="font-medium text-black text-sm">Haikal Adams ⭐ 4.9</span>
           </div>
         </motion.div>
       </div>

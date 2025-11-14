@@ -1,49 +1,45 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import PaymentModal from './../payment/PaymentModal';
+import PaymentModal from "../payment/PaymentModal";
 
 export default function BookingModal({ room, onClose, onBookingUpdate }) {
   const [loading, setLoading] = useState(false);
   const [booking, setBooking] = useState(null);
   const [showPayment, setShowPayment] = useState(false);
-  
-  const handlePaymentSuccess = () => {
-    // Update local booking state
-    setBooking(prev => ({
-      ...prev,
-      status: "paid"
-    }));
-    
-    // Notify parent component to update bookings list if needed
-    if (onBookingUpdate) {
-      onBookingUpdate();
-    }
-  };
 
+  // New states for nights & total calculation
+  const [nights, setNights] = useState(1);
+  const [total, setTotal] = useState(room?.price);
+
+  // Auto-update total when nights change
+  useEffect(() => {
+    setTotal(nights * room?.price);
+  }, [nights, room?.price]);
+
+  // Get logged-in user ID
   const getStoredUserId = () => {
-    if (typeof window === 'undefined') return null;
+    if (typeof window === "undefined") return null;
     try {
-      const raw = localStorage.getItem('user');
+      const raw = localStorage.getItem("user");
       if (!raw) return null;
       const parsed = JSON.parse(raw);
-      // result.data from authentication may be { message, user: { id, ... } }
       const userObj = parsed.user || parsed;
       return userObj?.id || userObj?._id || null;
-    } catch (e) {
-      console.error('Failed to parse stored user:', e);
+    } catch {
       return null;
     }
   };
 
+  // Create booking
   const handleConfirmBooking = async () => {
     try {
       setLoading(true);
 
       const userId = getStoredUserId();
       if (!userId) {
-        toast.error('You must be signed in to make a booking');
+        toast.error("You must be signed in to make a booking");
         setLoading(false);
         return;
       }
@@ -51,12 +47,12 @@ export default function BookingModal({ room, onClose, onBookingUpdate }) {
       const bookingData = {
         user_id: userId,
         booking_type: "hotel",
-        total_amount: room.price,
+        total_amount: total,
+        nights,
         status: "pending",
       };
 
       const res = await axios.post("/api/bookings", bookingData);
-      // API returns booking object in res.data
       setBooking(res.data);
       toast.success("Booking created successfully!");
     } catch (err) {
@@ -67,25 +63,22 @@ export default function BookingModal({ room, onClose, onBookingUpdate }) {
     }
   };
 
+  // Cancel + delete booking
   const handleCancelBooking = async () => {
-    if (!booking) return onClose();
     try {
-      // If booking is already paid, delete both booking and payment
+      if (!booking) return onClose();
+
+      // If booking was paid → delete payment first
       if (booking.status === "paid") {
-        // Delete associated payment first
         const payments = await axios.get("/api/payments");
-        const bookingPayment = payments.data.find(p => p.booking_id === booking._id);
-        if (bookingPayment) {
-          await axios.delete(`/api/payments/${bookingPayment._id}`);
-        }
+        const paid = payments.data.find((p) => p.booking_id === booking._id);
+        if (paid) await axios.delete(`/api/payments/${paid._id}`);
       }
-      
-      // Delete the booking
+
       await axios.delete(`/api/bookings/${booking._id}`);
-      toast.success("Booking deleted successfully");
-      if (onBookingUpdate) {
-        onBookingUpdate(); // Update the parent component's booking list
-      }
+      toast.success("Booking deleted successfully!");
+
+      if (onBookingUpdate) onBookingUpdate();
       onClose();
     } catch (err) {
       toast.error("Failed to delete booking!");
@@ -103,37 +96,71 @@ export default function BookingModal({ room, onClose, onBookingUpdate }) {
           ✕
         </button>
 
+        {/* BEFORE BOOKING IS CREATED */}
         {!booking ? (
           <>
-            {/* <h2 className="text-2xl font-semibold mb-4 text-center text-orange-500">
-              Book {room.room_type} Room
-            </h2> */}
-            <p className="mb-4 text-gray-500 dark:text-gray-300 text-center">
-              Price: <span className="text-orange-400 font-semibold">${room.price}</span> / night
+            <h2 className="text-2xl font-semibold mb-4 text-center text-orange-500">
+              Book {room?.room_type} Room
+            </h2>
+
+            <p className="text-center text-gray-500 dark:text-gray-300">
+              Price:{" "}
+              <span className="text-orange-500 font-semibold">
+                ${room?.price}
+              </span>{" "}
+              per night
+            </p>
+
+            {/* Nights Selector */}
+            <div className="mt-5 mb-4">
+              <label className="block text-gray-600 dark:text-gray-300 mb-1">
+                Number of Nights
+              </label>
+              <input
+                type="number"
+                min="1"
+                value={nights}
+                onChange={(e) => setNights(Number(e.target.value))}
+                className="w-full p-2 border rounded-lg bg-white dark:bg-gray-700"
+              />
+            </div>
+
+            {/* Total */}
+            <p className="text-center text-xl font-semibold">
+              Total:{" "}
+              <span className="text-orange-600">${total}</span>
             </p>
 
             <button
               onClick={handleConfirmBooking}
               disabled={loading}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold"
+              className="w-full mt-5 bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold"
             >
               {loading ? "Booking..." : "Confirm Booking"}
             </button>
           </>
         ) : (
           <>
+            {/* AFTER BOOKING IS CREATED */}
             <h2 className="text-xl font-semibold mb-4 text-center text-orange-400">
-              {booking.status === "paid" ? "Payment Complete!" : "Booking Confirmed!"}
+              {booking.status === "paid"
+                ? "Payment Complete!"
+                : "Booking Confirmed!"}
             </h2>
+
             {booking.status === "paid" ? (
               <div className="text-center">
                 <p className="mb-4">Thank you for your payment!</p>
+
                 <div className="mb-6 p-4 bg-green-100 dark:bg-green-900 rounded-lg">
-                  <p className="text-green-600 dark:text-green-400 font-semibold">✅ Paid</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                  <p className="text-green-600 dark:text-green-400 font-semibold">
+                    ✅ Paid
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
                     Amount: ${booking.total_amount}
                   </p>
                 </div>
+
                 <button
                   onClick={onClose}
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold"
@@ -146,6 +173,7 @@ export default function BookingModal({ room, onClose, onBookingUpdate }) {
                 <p className="text-center mb-6">
                   Your booking is now pending payment. Choose an option below.
                 </p>
+
                 <div className="flex flex-col gap-3">
                   <button
                     onClick={() => setShowPayment(true)}
@@ -153,11 +181,12 @@ export default function BookingModal({ room, onClose, onBookingUpdate }) {
                   >
                     Proceed to Payment
                   </button>
+
                   <button
                     onClick={handleCancelBooking}
                     className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
                   >
-                    <span>🗑️</span> Delete Booking
+                    🗑️ Delete Booking
                   </button>
                 </div>
               </>
@@ -166,398 +195,27 @@ export default function BookingModal({ room, onClose, onBookingUpdate }) {
         )}
       </div>
 
+      {/* PAYMENT MODAL */}
       {showPayment && booking && (
         <PaymentModal
           booking={booking}
           onClose={() => {
             setShowPayment(false);
-            // Refresh booking data after payment
-            setBooking(prev => ({
+            setBooking((prev) => ({
               ...prev,
-              status: "paid"
+              status: "paid",
             }));
           }}
-          onPaymentSuccess={handlePaymentSuccess}
+          onPaymentSuccess={() => {
+            setBooking((prev) => ({
+              ...prev,
+              status: "paid",
+            }));
+            if (onBookingUpdate) onBookingUpdate();
+          }}
         />
       )}
     </div>
   );
 }
-
-// "use client";
-
-// import { useState } from "react";
-// import axios from "axios";
-// import { toast } from "react-hot-toast";
-// import { motion } from "framer-motion";
-
-// export default function BookingModal({ item, type, onClose, onBookingUpdate }) {
-//   const [loading, setLoading] = useState(false);
-
-//   const getStoredUserId = () => {
-//     if (typeof window === "undefined") return null;
-//     try {
-//       const raw = localStorage.getItem("user");
-//       if (!raw) return null;
-//       const parsed = JSON.parse(raw);
-//       const userObj = parsed.user || parsed;
-//       return userObj?.id || userObj?._id || null;
-//     } catch {
-//       return null;
-//     }
-//   };
-
-//   const handleBooking = async () => {
-//     try {
-//       setLoading(true);
-//       const userId = getStoredUserId();
-//       if (!userId) {
-//         toast.error("You must be logged in to make a booking");
-//         return;
-//       }
-
-//       // Dynamically build booking details
-//       const payload = {
-//         user_id: userId,
-//         booking_type: type,
-//         status: "pending",
-//         booking_date: new Date(),
-//         total_amount:
-//           type === "car"
-//             ? item.price_per_day * (item.number_of_days || 1)
-//             : type === "hotel"
-//             ? item.price_per_night * (item.number_of_nights || 1)
-//             : item.ticket_price,
-//         car_details: type === "car" ? item : undefined,
-//         hotel_details: type === "hotel" ? item : undefined,
-//         flight_details: type === "flight" ? item : undefined,
-//       };
-
-//       const res = await axios.post("/api/bookings", payload);
-
-//       if (res.data.success) {
-//         toast.success("Booking created successfully!");
-//         onBookingUpdate?.();
-//         onClose();
-//       } else {
-//         toast.error(res.data.message || "Booking failed");
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       toast.error("Booking failed");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <motion.div
-//       className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
-//       initial={{ opacity: 0 }}
-//       animate={{ opacity: 1 }}
-//     >
-//       <motion.div
-//         className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 w-[400px] relative"
-//         initial={{ scale: 0.9 }}
-//         animate={{ scale: 1 }}
-//       >
-//         <button
-//           onClick={onClose}
-//           className="absolute top-3 right-4 text-gray-400 hover:text-gray-200"
-//         >
-//           ✕
-//         </button>
-
-//         <div className="text-center">
-//           {/* guard against missing item and provide a fallback image */}
-//           <img
-//             src={
-//               item?.image || item?.car_details?.image || item?.hotel_details?.image || '/assets/images/placeholder.png'
-//             }
-//             alt={item?.model || item?.name || item?.hotel_name || 'Booking'}
-//             className="w-full h-48 object-cover rounded-lg mb-4"
-//           />
-//           <h2 className="text-2xl font-semibold text-orange-500 mb-2">
-//             Book {type === "car" ? (item?.model || 'car') : (item?.name || 'room')}
-//           </h2>
-
-//           <p className="text-gray-400 mb-3 capitalize">Type: {type}</p>
-
-//           <p className="text-gray-600 font-medium mb-4">
-//             {type === "car"
-//               ? `Price per day: $${item?.price_per_day ?? item?.price ?? 0}`
-//               : type === "hotel"
-//               ? `Price per night: $${item?.price_per_night ?? item?.price ?? 0}`
-//               : `Ticket Price: $${item?.ticket_price ?? item?.price ?? 0}`}
-//           </p>
-
-//           <button
-//             onClick={handleBooking}
-//             disabled={loading}
-//             className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold"
-//           >
-//             {loading ? "Booking..." : "Confirm Booking"}
-//           </button>
-
-//           <button
-//             onClick={onClose}
-//             className="mt-2 w-full border border-gray-300 py-2 rounded-lg"
-//           >
-//             Cancel
-//           </button>
-//         </div>
-//       </motion.div>
-//     </motion.div>
-//   );
-// }
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import axios from "axios";
-// import { toast } from "react-hot-toast";
-// import { motion } from "framer-motion";
-// import PaymentModal from "../payment/PaymentModal";
-
-// export default function BookingModal({ item, type, onClose, onBookingUpdate }) {
-//   const [loading, setLoading] = useState(false);
-//   const [showPayment, setShowPayment] = useState(false);
-//   const [checkIn, setCheckIn] = useState("");
-//   const [checkOut, setCheckOut] = useState("");
-//   const [totalPrice, setTotalPrice] = useState(0);
-//   const [booking, setBooking] = useState(null);
-
-//   // 🧠 Calculate total price whenever dates change
-//   useEffect(() => {
-//     if (checkIn && checkOut) {
-//       const days =
-//         (new Date(checkOut).getTime() - new Date(checkIn).getTime()) /
-//         (1000 * 60 * 60 * 24);
-//       if (days > 0) {
-//         const rate =
-//           type === "car"
-//             ? item.price_per_day
-//             : type === "hotel"
-//             ? item.price_per_night
-//             : item.ticket_price;
-//         setTotalPrice(days * rate);
-//       } else {
-//         setTotalPrice(0);
-//       }
-//     }
-//   }, [checkIn, checkOut, item, type]);
-
-//   const getStoredUserId = () => {
-//     if (typeof window === "undefined") return null;
-//     try {
-//       const raw = localStorage.getItem("user");
-//       if (!raw) return null;
-//       const parsed = JSON.parse(raw);
-//       const userObj = parsed.user || parsed;
-//       return userObj?.id || userObj?._id || null;
-//     } catch {
-//       return null;
-//     }
-//   };
-
-//   const handleBooking = async () => {
-//     if (!checkIn || !checkOut) {
-//       toast.error("Please select check-in and check-out dates");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-//       const userId = getStoredUserId();
-//       if (!userId) {
-//         toast.error("You must be logged in to make a booking");
-//         return;
-//       }
-
-//       const payload = {
-//         user_id: userId,
-//         booking_type: type,
-//         status: "pending",
-//         booking_date: new Date(),
-//         total_amount: totalPrice,
-//         car_details:
-//           type === "car"
-//             ? {
-//                 model: item.model,
-//                 category: item.category,
-//                 price_per_day: item.price_per_day,
-//                 number_of_days:
-//                   (new Date(checkOut) - new Date(checkIn)) /
-//                   (1000 * 60 * 60 * 24),
-//                 image: item.image,
-//               }
-//             : undefined,
-//         hotel_details:
-//           type === "hotel"
-//             ? {
-//                 name: item.name,
-//                 room_type: item.room_type,
-//                 price_per_night: item.price_per_night,
-//                 number_of_nights:
-//                   (new Date(checkOut) - new Date(checkIn)) /
-//                   (1000 * 60 * 60 * 24),
-//                 image: item.image,
-//               }
-//             : undefined,
-//         flight_details:
-//           type === "flight"
-//             ? {
-//                 airline: item.airline,
-//                 destination: item.destination,
-//                 departure: item.departure,
-//                 ticket_price: item.ticket_price,
-//                 image: item.image,
-//               }
-//             : undefined,
-//       };
-
-//       const res = await axios.post("/api/bookings", payload);
-
-//       if (res.data.success) {
-//         toast.success("Booking created successfully!");
-//         setBooking(res.data.data);
-//       } else {
-//         toast.error(res.data.message || "Booking failed");
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       toast.error("Booking failed");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleDeleteBooking = async () => {
-//     if (!booking) return;
-//     try {
-//       await axios.delete(`/api/bookings/${booking._id}`);
-//       toast.success("Booking deleted successfully!");
-//       onBookingUpdate?.();
-//       onClose();
-//     } catch {
-//       toast.error("Failed to delete booking!");
-//     }
-//   };
-
-//   return (
-//     <motion.div
-//       className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
-//       initial={{ opacity: 0 }}
-//       animate={{ opacity: 1 }}
-//     >
-//       <motion.div
-//         className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 w-[400px] relative"
-//         initial={{ scale: 0.9 }}
-//         animate={{ scale: 1 }}
-//       >
-//         <button
-//           onClick={onClose}
-//           className="absolute top-3 right-4 text-gray-400 hover:text-gray-200"
-//         >
-//           ✕
-//         </button>
-
-//         {/* ✅ IMAGE */}
-//         <img
-//           src={item?.image || "/assets/images/placeholder.png"}
-//           alt={item?.name || item?.model || "Item"}
-//           className="w-full h-48 object-cover rounded-lg mb-4"
-//         />
-
-//         {/* ✅ Booking Form */}
-//         {!booking ? (
-//           <>
-//             <h2 className="text-2xl font-semibold text-orange-500 mb-2">
-//               Book {type === "car" ? item.model : item.name}
-//             </h2>
-
-//             <div className="flex flex-col gap-2 mb-4">
-//               <label className="text-gray-400 text-sm">Check-In Date</label>
-//               <input
-//                 type="date"
-//                 value={checkIn}
-//                 onChange={(e) => setCheckIn(e.target.value)}
-//                 className="border p-2 rounded-lg w-full"
-//               />
-//               <label className="text-gray-400 text-sm">Check-Out Date</label>
-//               <input
-//                 type="date"
-//                 value={checkOut}
-//                 onChange={(e) => setCheckOut(e.target.value)}
-//                 className="border p-2 rounded-lg w-full"
-//               />
-//             </div>
-
-//             <p className="text-gray-500 mb-4">
-//               Total:{" "}
-//               <span className="text-orange-500 font-semibold">
-//                 ${totalPrice || 0}
-//               </span>
-//             </p>
-
-//             <button
-//               onClick={handleBooking}
-//               disabled={loading}
-//               className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-lg font-semibold"
-//             >
-//               {loading ? "Booking..." : "Confirm Booking"}
-//             </button>
-
-//             <button
-//               onClick={onClose}
-//               className="mt-2 w-full border border-gray-300 py-2 rounded-lg"
-//             >
-//               Cancel
-//             </button>
-//           </>
-//         ) : (
-//           <>
-//             <h2 className="text-xl font-semibold mb-4 text-center text-orange-400">
-//               Booking Confirmed!
-//             </h2>
-
-//             <div className="text-center">
-//               <p className="mb-2 text-gray-300">Status: {booking.status}</p>
-//               <p className="mb-2 text-gray-300">
-//                 Amount: ${booking.total_amount}
-//               </p>
-
-//               <div className="flex flex-col gap-3 mt-4">
-//                 {booking.status !== "paid" && (
-//                   <button
-//                     onClick={() => setShowPayment(true)}
-//                     className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg font-semibold"
-//                   >
-//                     Proceed to Payment
-//                   </button>
-//                 )}
-//                 <button
-//                   onClick={handleDeleteBooking}
-//                   className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-semibold"
-//                 >
-//                   Delete Booking
-//                 </button>
-//               </div>
-//             </div>
-//           </>
-//         )}
-//       </motion.div>
-
-//       {showPayment && booking && (
-//         <PaymentModal
-//           booking={booking}
-//           onClose={() => setShowPayment(false)}
-//           onPaymentSuccess={() => {
-//             setBooking((prev) => ({ ...prev, status: "paid" }));
-//             toast.success("Payment completed!");
-//           }}
-//         />
-//       )}
-//     </motion.div>
-//   );
-// }
 

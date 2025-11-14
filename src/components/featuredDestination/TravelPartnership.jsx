@@ -51,7 +51,7 @@ export default function TravelPartnership() {
   }, [emblaApi]);
 
   return (
-    <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
+    <section className="py-20 bg-background">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-gray-800">
           Our Trusted Travel Partners
@@ -66,7 +66,7 @@ export default function TravelPartnership() {
           {[...partners, ...partners].map((partner, index) => (
             <div
               key={index}
-              className="flex-shrink-0 flex items-center justify-center w-48 h-24 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300"
+              className="flex-shrink-0 flex items-center justify-center w-48 h-24 bg-background rounded-2xl shadow-md hover:shadow-lg transition-all duration-300"
             >
               <Image
                 src={partner.logo}

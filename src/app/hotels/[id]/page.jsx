@@ -1,136 +1,136 @@
-"use client";
+// "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import axios from "axios";
-import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import RoomCard from "./../../../components/hotel/RoomCard";
+// import { useEffect, useState } from "react";
+// import { useParams } from "next/navigation";
+// import axios from "axios";
+// import { motion } from "framer-motion";
+// import { Star } from "lucide-react";
+// import RoomCard from "./../../../components/hotel/RoomCard";
 
-export default function HotelDetailsPage() {
-  const { id } = useParams();
-  const [hotel, setHotel] = useState(null);
-  const [rooms, setRooms] = useState([]);
+// export default function HotelDetailsPage() {
+//   const { id } = useParams();
+//   const [hotel, setHotel] = useState(null);
+//   const [rooms, setRooms] = useState([]);
 
-  useEffect(() => {
-    if (!id) return;
+//   useEffect(() => {
+//     if (!id) return;
 
-    // Fetch hotel details
-    axios
-      .get(`/api/hotels/${id}`)
-      .then((res) => setHotel(res.data.data || res.data))
-      .catch((err) => console.error("Error fetching hotel:", err));
+//     // Fetch hotel details
+//     axios
+//       .get(`/api/hotels/${id}`)
+//       .then((res) => setHotel(res.data.data || res.data))
+//       .catch((err) => console.error("Error fetching hotel:", err));
 
-    // Fetch rooms for this hotel
-    axios
-      .get("/api/rooms")
-      .then((res) => {
-        // API returns { success: true, data: [...] } — normalize
-        const roomsData = res.data?.data || res.data || [];
+//     // Fetch rooms for this hotel
+//     axios
+//       .get("/api/rooms")
+//       .then((res) => {
+//         // API returns { success: true, data: [...] } — normalize
+//         const roomsData = res.data?.data || res.data || [];
 
-        const filteredRooms = roomsData.filter((room) => {
-          // room.hotel_id may be an ObjectId, an object with _id, or a string
-          const roomHotelId = room?.hotel_id?._id || room?.hotel_id;
-          return String(roomHotelId) === String(id);
-        });
+//         const filteredRooms = roomsData.filter((room) => {
+//           // room.hotel_id may be an ObjectId, an object with _id, or a string
+//           const roomHotelId = room?.hotel_id?._id || room?.hotel_id;
+//           return String(roomHotelId) === String(id);
+//         });
 
-        setRooms(filteredRooms);
-      })
-      .catch((err) => console.error("Error fetching rooms:", err));
-  }, [id]);
+//         setRooms(filteredRooms);
+//       })
+//       .catch((err) => console.error("Error fetching rooms:", err));
+//   }, [id]);
 
-  if (!hotel)
+//   if (!hotel)
    
-       return (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-    );
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-8 md:p-16 transition-colors duration-300">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden"
-      >
-        {/* Hotel Banner Image */}
-        <img
-          src={hotel.image}
-          alt={hotel.hotel_name}
-          className="w-full h-96 object-cover"
-        />
+//        return (
+//         <div className="flex items-center justify-center min-h-screen">
+//           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+//         </div>
+//     );
+//   return (
+//     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-8 md:p-16 transition-colors duration-300">
+//       <motion.div
+//         initial={{ opacity: 0, y: 30 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden"
+//       >
+//         {/* Hotel Banner Image */}
+//         <img
+//           src={hotel.image}
+//           alt={hotel.hotel_name}
+//           className="w-full h-96 object-cover"
+//         />
 
-        {/* Hotel Info Section */}
-        <div className="p-8">
-          {/* Header: Name & Rating */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-              {hotel.hotel_name}
-            </h1>
+//         {/* Hotel Info Section */}
+//         <div className="p-8">
+//           {/* Header: Name & Rating */}
+//           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
+//             <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+//               {hotel.hotel_name}
+//             </h1>
 
-            {/* Star Rating */}
-            <div className="flex items-center gap-1 mt-3 md:mt-0">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-5 h-5 ${
-                    i < Math.round(hotel.star_rating || 4)
-                      ? "text-yellow-400 fill-yellow-400"
-                      : "text-gray-300 dark:text-gray-600"
-                  }`}
-                />
-              ))}
-              <span className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                {hotel.star_rating?.toFixed(1) || "4.0"}
-              </span>
-            </div>
-          </div>
+//             {/* Star Rating */}
+//             <div className="flex items-center gap-1 mt-3 md:mt-0">
+//               {[...Array(5)].map((_, i) => (
+//                 <Star
+//                   key={i}
+//                   className={`w-5 h-5 ${
+//                     i < Math.round(hotel.star_rating || 4)
+//                       ? "text-yellow-400 fill-yellow-400"
+//                       : "text-gray-300 dark:text-gray-600"
+//                   }`}
+//                 />
+//               ))}
+//               <span className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+//                 {hotel.star_rating?.toFixed(1) || "4.0"}
+//               </span>
+//             </div>
+//           </div>
 
-          {/* Location */}
-          <p className="text-orange-500 font-medium mb-2">{hotel.location}</p>
+//           {/* Location */}
+//           <p className="text-orange-500 font-medium mb-2">{hotel.location}</p>
 
-          {/* Description */}
-          <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-            {hotel.description}
-          </p>
+//           {/* Description */}
+//           <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+//             {hotel.description}
+//           </p>
 
-          {/* Price */}
-          <p className="text-xl font-semibold text-orange-500 mb-6">
-            ${hotel.price_per_night} / night
-          </p>
+//           {/* Price */}
+//           <p className="text-xl font-semibold text-orange-500 mb-6">
+//             ${hotel.price_per_night} / night
+//           </p>
 
-          {/* CTA */}
-          <button className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-8 rounded-full font-semibold transition-all mb-10">
-            Book Now
-          </button>
+//           {/* CTA */}
+//           <button className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-8 rounded-full font-semibold transition-all mb-10">
+//             Book Now
+//           </button>
 
-          {/* Available Rooms */}
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Available Rooms
-          </h2>
+//           {/* Available Rooms */}
+//           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+//             Available Rooms
+//           </h2>
 
-          {rooms.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {rooms.map((room) => (
-                <motion.div
-                  key={room._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <RoomCard room={room} />
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-600 dark:text-gray-400">
-              No available rooms at the moment.
-            </p>
-          )}
-        </div>
-      </motion.div>
-    </div>
-  );
-}
+//           {rooms.length > 0 ? (
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               {rooms.map((room) => (
+//                 <motion.div
+//                   key={room._id}
+//                   initial={{ opacity: 0, y: 20 }}
+//                   animate={{ opacity: 1, y: 0 }}
+//                 >
+//                   <RoomCard room={room} />
+//                 </motion.div>
+//               ))}
+//             </div>
+//           ) : (
+//             <p className="text-gray-600 dark:text-gray-400">
+//               No available rooms at the moment.
+//             </p>
+//           )}
+//         </div>
+//       </motion.div>
+//     </div>
+//   );
+// }
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -409,3 +409,132 @@ export default function HotelDetailsPage() {
 //     </div>
 //   );
 // }
+
+
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
+import RoomCard from "@/components/hotel/RoomCard";
+import BookingModal from "@/components/bookings/BookingModal";
+
+
+export default function HotelDetailsPage() {
+  const { id } = useParams();
+  const [hotel, setHotel] = useState(null);
+  const [rooms, setRooms] = useState([]);
+
+  // Booking modal state
+  const [selectedRoom, setSelectedRoom] = useState(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    // Fetch Hotel
+    axios.get(`/api/hotels/${id}`).then((res) => {
+      setHotel(res.data.data || res.data);
+    });
+
+    // Fetch All Rooms
+    axios.get("/api/rooms").then((res) => {
+      const allRooms = res.data?.data || res.data || [];
+      const filtered = allRooms.filter((room) => {
+        const roomHotelId =
+          room.hotel_id?._id || room.hotel_id;
+        return String(roomHotelId) === String(id);
+      });
+      setRooms(filtered);
+    });
+  }, [id]);
+
+  if (!hotel)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-8 md:p-16">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-5xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden"
+      >
+        {/* Hotel Image */}
+        <img src={hotel.image} className="w-full h-96 object-cover" />
+
+        <div className="p-8">
+          {/* Header */}
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold">{hotel.hotel_name}</h1>
+
+            {/* Star Rating */}
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`w-5 h-5 ${
+                    i < Math.round(hotel.star_rating || 4)
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-300 dark:text-gray-600"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <p className="text-orange-500 mt-2">{hotel.location}</p>
+
+          <p className="text-gray-600 dark:text-gray-300 mt-4">
+            {hotel.description}
+          </p>
+
+          {/* PRICE */}
+          <p className="text-xl font-semibold text-orange-500 mt-6">
+            Starting at ${hotel.price_per_night} / night
+          </p>
+
+          {/* Rooms Section */}
+          <h2 className="text-2xl font-bold mt-10 mb-4">Available Rooms</h2>
+
+          {rooms.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {rooms.map((room) => (
+                <div
+                  key={room._id}
+                  className="p-4 rounded-xl bg-gray-100 dark:bg-gray-800 shadow"
+                >
+                  <RoomCard room={room} />
+
+                  <button
+                    onClick={() => setSelectedRoom(room)}
+                    className="mt-4 w-full bg-orange-500 hover:bg-orange-600 
+                               text-white py-2 rounded-lg font-semibold"
+                  >
+                    Book This Room
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-600">No rooms available.</p>
+          )}
+        </div>
+      </motion.div>
+
+      {/* BOOKING MODAL */}
+      {selectedRoom && (
+        <BookingModal
+          room={selectedRoom}
+          onClose={() => setSelectedRoom(null)}
+          onBookingUpdate={() => {}}
+        />
+      )}
+    </div>
+  );
+}

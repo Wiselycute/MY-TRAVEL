@@ -54,12 +54,12 @@ export default function Page() {
 
   return (
     <>
-    <main className="min-h-screen w-full bg-background text-gray-800">
+    <main className="min-h-screen w-full  bg-background text-gray-800">
       {/*  HERO SECTION */}
       <section
-        className="relative bg-cover bg-center bg-no-repeat h-[80vh] flex flex-col justify-center items-center text-center"
+        className="relative bg-cover bg-center mt-15 bg-no-repeat h-[80vh] flex flex-col justify-center items-center text-center"
         style={{
-          backgroundImage: "url('/images/travel-hero.jpg')", 
+          backgroundImage: "url('/travel-hero.jpg')", 
         }}
       >
         <div className="absolute inset-0 bg-blue-900/40"></div>
@@ -70,7 +70,7 @@ export default function Page() {
           className="relative z-10"
         >
           <h1 className="text-5xl sm:text-6xl font-bold text-white drop-shadow-md">
-            Explore the world and enjoy its beauty ✈️
+            Explore the world and enjoy its beauty 
           </h1>
           <p className="text-white/90 mt-4 text-lg max-w-xl mx-auto">
             Find and book your perfect flights, hotels, and car rentals easily.
@@ -82,14 +82,14 @@ export default function Page() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="relative z-10 mt-10 w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden"
+          className="relative z-10 mt-10 w-full max-w-5xl bg-white/10 backdrop-blur-lg shadow-xl rounded-2xl  overflow-hidden"
         >
-          <div className="flex border-b">
-            {["flights", "cars", "hotels"].map((tab) => (
+          <div className="flex gap-x-6 px-3 border-b text-white">
+            {["all", "flights", "cars", "hotels", "packages","insurance", "tours and activities"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setCategory(tab)}
-                className={`flex-1 py-3 font-semibold text-sm sm:text-base transition ${
+                className={`flex  py-3 font-semibold text-sm sm:text-base  text-white transition ${
                   category === tab
                     ? "border-b-4 border-blue-600 text-blue-600"
                     : "text-gray-500 hover:text-blue-500"
@@ -102,26 +102,26 @@ export default function Page() {
 
           <div className="p-6 grid sm:grid-cols-4 gap-4">
             <div className="col-span-2">
-              <label className="text-gray-600 text-sm">Destination</label>
+              <label className=" text-white text-sm">Destination</label>
               <input
                 type="text"
                 placeholder="Where to?"
-                className="w-full border rounded-lg px-3 py-2 mt-1 outline-none"
+                className="w-full border border-white rounded-lg px-3 py-2 mt-1 outline-none"
               />
             </div>
 
             <div>
-              <label className="text-gray-600 text-sm">
+              <label className=" text-white text-sm ">
                 {category === "cars" ? "Pick-up" : "Check-in"}
               </label>
-              <input type="date" className="w-full border rounded-lg px-3 py-2 mt-1 outline-none" />
+              <input type="date" className="w-full border border-white rounded-lg px-3 py-2 mt-1 outline-none" />
             </div>
 
             <div>
-              <label className="text-gray-600 text-sm">
+              <label className=" text-white text-sm">
                 {category === "cars" ? "Drop-off" : "Check-out"}
               </label>
-              <input type="date" className="w-full border rounded-lg px-3 py-2 mt-1 outline-none" />
+              <input type="date" className="w-full border border-white rounded-lg px-3 py-2 mt-1 outline-none" />
             </div>
           </div>
 
@@ -190,7 +190,7 @@ function CarouselSection({
               items.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex-none w-72 bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+                  className="flex-none w-72 bg-background rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
