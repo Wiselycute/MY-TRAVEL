@@ -38,8 +38,8 @@ export default function NavbarComponent() {
     <nav className="w-full bg-background border-border fixed top-0 left-0 z-50 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-3">
         {/* Logo */}
-        <h1 className="text-2xl font-bold text-primary cursor-pointer">
-          My Travel
+        <h1 className="text-2xl font-bold font-sans-serif  cursor-pointer">
+          TRIP <span className="text-primary"> FUSION </span>
         </h1>
 
         {/* Desktop Menu */}
