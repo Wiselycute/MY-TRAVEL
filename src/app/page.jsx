@@ -214,7 +214,7 @@ function CarouselSection({
                         : ""}
                     </p>
                     <Link href={`${linkBase}/${item._id}`}>
-                      <button className="mt-3 w-full px-4 py-2 text-sm bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+                      <button className="mt-3 w-full px-4 py-2 text-sm bg-[#FFA500] text-white rounded-full hover:bg-blue-700 transition">
                         {buttonText}
                       </button>
                     </Link>

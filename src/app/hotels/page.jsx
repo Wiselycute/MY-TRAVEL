@@ -90,7 +90,7 @@ export default function HotelsPage() {
           className="w-full h-80 object-cover rounded-2xl mb-6"
         />
         <h1 className="text-4xl font-bold mb-3">{hotel.hotel_name}</h1>
-        <p className="text-orange-300 mb-2">{hotel.location}</p>
+        <p className="text-primary mb-2">{hotel.location}</p>
         <p className="text-lg mb-4 opacity-80">{hotel.description}</p>
         <h2 className="text-2xl font-semibold mb-4">Available Rooms</h2>
 

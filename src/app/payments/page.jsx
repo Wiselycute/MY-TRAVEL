@@ -303,7 +303,7 @@ export default function PaymentsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background mt-11 p-8">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

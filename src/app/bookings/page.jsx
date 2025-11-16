@@ -378,8 +378,8 @@ export default function BookingsPage() {
   };
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6 text-orange-500">My Bookings</h1>
+    <div className="p-8 bg-background">
+      <h1 className="text-3xl mt-11  font-bold mb-6 text-orange-500">My Bookings</h1>
       <div className="grid md:grid-cols-3 gap-6">
         {bookings.map((b) => (
           <div

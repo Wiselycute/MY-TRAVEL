@@ -488,14 +488,14 @@ export default function HotelDetailsPage() {
             </div>
           </div>
 
-          <p className="text-orange-500 mt-2">{hotel.location}</p>
+          <p className="text-primary mt-2">{hotel.location}</p>
 
           <p className="text-gray-600 dark:text-gray-300 mt-4">
             {hotel.description}
           </p>
 
           {/* PRICE */}
-          <p className="text-xl font-semibold text-orange-500 mt-6">
+          <p className="text-xl font-semibold text-primary mt-6">
             Starting at ${hotel.price_per_night} / night
           </p>
 
@@ -513,7 +513,7 @@ export default function HotelDetailsPage() {
 
                   <button
                     onClick={() => setSelectedRoom(room)}
-                    className="mt-4 w-full bg-orange-500 hover:bg-orange-600 
+                    className="mt-4 w-full bg-[#FFA500] hover:bg-orange-600 
                                text-white py-2 rounded-lg font-semibold"
                   >
                     Book This Room

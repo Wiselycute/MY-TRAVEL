@@ -21,16 +21,16 @@ export default function RoomCard({ room }) {
         className="w-full h-40 object-cover rounded-lg mb-4"
       />
       <h3 className="text-xl font-semibold mb-2">{room.room_type} Room</h3>
-      <p className="text-orange-400 font-medium mb-1">${room.price} / night</p>
+      <p className="text-primary font-medium mb-1">${room.price} / night</p>
       <p className="text-sm opacity-80 mb-4">Capacity: {room.capacity} people</p>
 
       {/* Book Button */}
-      <button
+      {/* <button
         onClick={() => setOpen(true)}
-        className="w-full py-2 bg-orange-500 hover:bg-orange-600 rounded-lg text-white font-medium transition-all"
+        className="w-full py-2 bg-[#FFA500] hover:bg-orange-600 rounded-lg text-white font-medium transition-all"
       >
         Book This Room
-      </button>
+      </button> */}
 
       {/* Modal */}
       {open && (
