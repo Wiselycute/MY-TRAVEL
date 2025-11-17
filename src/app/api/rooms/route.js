@@ -1,8 +1,7 @@
 // app/api/rooms/route.js
 import { NextResponse } from "next/server";
 import connectDB from "../../../db/connectDB";
-// import Room from "@/models/room";
-import { Room } from '@/models/room';
+import Room from "@/models/room";
 
 const PLACEHOLDER = "/assets/images/room-placeholder.svg";
 
