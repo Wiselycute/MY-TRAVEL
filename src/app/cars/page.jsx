@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import HeroComponent from "@/components/cars/HeroComponent/HeroComponent";
-import FilterComponent from "@/components/cars/FilterComponent/FilterComponent";
+// import FilterComponent from "@/components/cars/FilterComponent/FilterComponent";
 import ServicesComponent from "@/components/cars/ServicesComponent/ServicesComponent";
 import NewsComponent from "@/components/cars/NewsComponent/NewsComponent";
 
@@ -27,7 +27,7 @@ export default function CarsPage() {
   return (
     <>
       <HeroComponent />
-      <FilterComponent cars={cars} setFilteredCars={setFilteredCars} />
+      {/* <FilterComponent cars={cars} setFilteredCars={setFilteredCars}/> */}
       <ServicesComponent cars={filteredCars} />
       <NewsComponent />
     </>

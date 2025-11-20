@@ -53,7 +53,7 @@ export default function TravelPartnership() {
   return (
     <section className="py-20 bg-background">
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-800">
+        <h2 className="text-4xl font-bold text-primary ">
           Our Trusted Travel Partners
         </h2>
         <p className="text-gray-600 mt-2">
@@ -81,7 +81,7 @@ export default function TravelPartnership() {
       </div>
 
       <div className="text-center mt-14">
-        <button className="px-8 py-3 bg-blue-600 text-white font-medium rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
+        <button className="px-8 py-3 bg-[#FFA500] text-white font-medium rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
           Become a Partner
         </button>
       </div>

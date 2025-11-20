@@ -9,6 +9,9 @@ import { Search } from "lucide-react";
 import { FeaturedDestinations } from "@/components/featuredDestination/FeaturedDestinations";
 import TravelMemories from "@/components/featuredDestination/TravelMemories";
 import TravelPartnership from './../components/featuredDestination/TravelPartnership';
+import { Testimonials } from "@/components/testimonials/Testimonials";
+import HeroTravel from './../components/hero/HeroTravel';
+
 
 
 export default function Page() {
@@ -56,82 +59,8 @@ export default function Page() {
     <>
     <main className="min-h-screen w-full  bg-background text-gray-800">
       {/*  HERO SECTION */}
-      <section
-        className="relative bg-cover bg-center mt-15 bg-no-repeat h-[80vh] flex flex-col justify-center items-center text-center"
-        style={{
-          backgroundImage: "url('/travel-hero.jpg')", 
-        }}
-      >
-        <div className="absolute inset-0 bg-blue-900/40"></div>
-        <motion.div
-          initial={{ opacity: 0, y: -40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative z-10"
-        >
-          <h1 className="text-5xl sm:text-6xl font-bold text-white drop-shadow-md">
-            Explore the world and enjoy its beauty 
-          </h1>
-          <p className="text-white/90 mt-4 text-lg max-w-xl mx-auto">
-            Find and book your perfect flights, hotels, and car rentals easily.
-          </p>
-        </motion.div>
-
-        {/* SEARCH CARD */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="relative z-10 mt-10 w-full max-w-5xl bg-white/10 backdrop-blur-lg shadow-xl rounded-2xl  overflow-hidden"
-        >
-          <div className="flex gap-x-6 px-3 border-b text-white">
-            {["all", "flights", "cars", "hotels", "packages","insurance", "tours and activities"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setCategory(tab)}
-                className={`flex  py-3 font-semibold text-sm sm:text-base  text-white transition ${
-                  category === tab
-                    ? "border-b-4 border-blue-600 text-blue-600"
-                    : "text-gray-500 hover:text-blue-500"
-                }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            ))}
-          </div>
-
-          <div className="p-6 grid sm:grid-cols-4 gap-4">
-            <div className="col-span-2">
-              <label className=" text-white text-sm">Destination</label>
-              <input
-                type="text"
-                placeholder="Where to?"
-                className="w-full border border-white rounded-lg px-3 py-2 mt-1 outline-none"
-              />
-            </div>
-
-            <div>
-              <label className=" text-white text-sm ">
-                {category === "cars" ? "Pick-up" : "Check-in"}
-              </label>
-              <input type="date" className="w-full border border-white rounded-lg px-3 py-2 mt-1 outline-none" />
-            </div>
-
-            <div>
-              <label className=" text-white text-sm">
-                {category === "cars" ? "Drop-off" : "Check-out"}
-              </label>
-              <input type="date" className="w-full border border-white rounded-lg px-3 py-2 mt-1 outline-none" />
-            </div>
-          </div>
-
-          <div className="flex justify-end px-6 pb-6">
-            <button className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
-              <Search size={18} /> Search
-            </button>
-          </div>
-        </motion.div>
-      </section>
+     
+      <HeroTravel category={category} setCategory={setCategory} />
 
       {/*  FEATURED DESTINATIONS SECTION */}
       <div className="max-w-6xl mx-auto mt-20 px-4">
@@ -163,6 +92,7 @@ export default function Page() {
 
      <TravelMemories/>
      <TravelPartnership/>
+     <Testimonials/>
     </>
   );
 }
@@ -182,21 +112,21 @@ function CarouselSection({
   return (
     <section className="py-12 bg-background">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">{title}</h2>
+        <h2 className="text-2xl font-semibold mb-6  flex justify-center text-primary">{title}</h2>
 
-        <div className="overflow-hidden" ref={emblaRef}>
+        <div className="overflow-hidden " ref={emblaRef}>
           <div className="flex gap-6">
             {items.length > 0 ? (
               items.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="flex-none w-72 bg-background rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+                  className="flex-none w-72 bg-background rounded-2xl shadow-md overflow-hidden   hover:border-blue-400/40 hover:shadow-xl hover:shadow-blue-200 transition-all duration-500 hover:-translate-y-2 group cursor-pointer"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <div className="relative w-full h-48">
+                  <div className="relative w-full h-48 ">
                     <img
                       src={item.image}
                       alt={item[itemKey]}
@@ -204,7 +134,7 @@ function CarouselSection({
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold capitalize">
+                    <h3 className="text-lg text-primary font-semibold capitalize">
                       {item[itemKey]}
                     </h3>
                     <p className="text-gray-500">{item[descriptionKey]}</p>
